@@ -61,19 +61,26 @@ class HomePage extends StatelessWidget {
         ),
         body: ListView(
           children: const [
-            EvenMapListItem(
+            OddMapListItem(
               img: 'assets/images/maps/bind.png',
-              mapName: "Bind", index: 1,
+              mapName: "Bind",
+              index: 1,
+            ),
+            EvenMapListItem(
+              img: 'assets/images/maps/haven.png',
+              mapName: "Haven",
+              index: 2,
             ),
             OddMapListItem(
-              img: 'assets/images/maps/haven.png', mapName: "Haven", index: 2,
-            ),
-            EvenMapListItem(
               img: 'assets/images/maps/ascent.png',
               mapName: "Ascent",
               index: 3,
             ),
-            OddMapListItem(img: 'assets/images/maps/split.png', mapName: "Split", index: 4,),
+            EvenMapListItem(
+              img: 'assets/images/maps/split.png',
+              mapName: "Split",
+              index: 4,
+            ),
           ],
         ),
       ),
@@ -82,14 +89,18 @@ class HomePage extends StatelessWidget {
 }
 
 // different orientation based on position in the list order
-class EvenMapListItem extends StatelessWidget {
+class OddMapListItem extends StatelessWidget {
   final String img;
   final String mapName;
   final String? mapDesc;
   final int? index;
 
-  const EvenMapListItem(
-      {Key? key, required this.img, required this.mapName, this.mapDesc, this.index})
+  const OddMapListItem(
+      {Key? key,
+      required this.img,
+      required this.mapName,
+      this.mapDesc,
+      this.index})
       : super(key: key);
 
   @override
@@ -216,15 +227,19 @@ class EvenMapListItem extends StatelessWidget {
 }
 
 // different orientation based on position in the list order
-class OddMapListItem extends StatelessWidget {
+class EvenMapListItem extends StatelessWidget {
   //img path
   final String img;
   final String mapName;
   final String? mapDesc;
   final int? index;
 
-  const OddMapListItem(
-      {Key? key, required this.img, required this.mapName, this.mapDesc, this.index})
+  const EvenMapListItem(
+      {Key? key,
+      required this.img,
+      required this.mapName,
+      this.mapDesc,
+      this.index})
       : super(key: key);
 
   @override
@@ -301,10 +316,11 @@ class OddMapListItem extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    mapDesc ?? "Two sites. No middle. Gotta pick left or right. "
-                                    "What’s it going to be then? Both offer direct paths "
-                                    "for attackers and a pair of one-way teleporters make "
-                                    "it easier to flank.",
+                                    mapDesc ??
+                                        "Two sites. No middle. Gotta pick left or right. "
+                                            "What’s it going to be then? Both offer direct paths "
+                                            "for attackers and a pair of one-way teleporters make "
+                                            "it easier to flank.",
                                     style: const TextStyle(
                                       fontSize: 7,
                                       fontWeight: FontWeight.bold,
@@ -318,7 +334,7 @@ class OddMapListItem extends StatelessWidget {
                             ),
                           )),
                     ),
-                     Positioned(
+                    Positioned(
                         top: 4,
                         child: RotatedBox(
                           quarterTurns: 3,
