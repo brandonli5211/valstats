@@ -81,11 +81,35 @@ class HomePage extends StatelessWidget {
               mapName: "Split",
               index: 4,
             ),
+            OddMapListItem(
+              img: 'assets/images/maps/bind.png',
+              mapName: "Bind",
+              index: 5,
+            ),
+            EvenMapListItem(
+              img: 'assets/images/maps/haven.png',
+              mapName: "Haven",
+              index: 6,
+            ),
+            OddMapListItem(
+              img: 'assets/images/maps/ascent.png',
+              mapName: "Ascent",
+              index: 7,
+            ),
+            EvenMapListItem(
+              img: 'assets/images/maps/split.png',
+              mapName: "Split",
+              index: 8,
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+String indexer(int index){
+  return index.toString().padLeft(2, '0');
 }
 
 // different orientation based on position in the list order
@@ -208,7 +232,7 @@ class OddMapListItem extends StatelessWidget {
                         child: RotatedBox(
                           quarterTurns: 3,
                           child: Text(
-                            "0$index",
+                            indexer(index!),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -339,7 +363,7 @@ class EvenMapListItem extends StatelessWidget {
                         child: RotatedBox(
                           quarterTurns: 3,
                           child: Text(
-                            "0$index",
+                            indexer(index!),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -363,3 +387,4 @@ class EvenMapListItem extends StatelessWidget {
     );
   }
 }
+
