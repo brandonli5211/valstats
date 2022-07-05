@@ -14,13 +14,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Valorant Stats',
       theme: ThemeData(fontFamily: 'Valorant'),
-      home: HomePage(),
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,74 +34,74 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
             children: [
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text('valorant')),
-              Container(
+              const DrawerHeader(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.redAccent.withAlpha(35),
-                        blurRadius: 4.2,
-                      ),
-                    ]),
-                child: Image.asset(
-                  'assets/images/vallogo.png',
-                  fit: BoxFit.contain,
-                  height: 45,
+                  color: Colors.blue,
                 ),
+                child: Text('Drawer Header'),
+              ),
+              ListTile(
+                title: const Text('Item 1'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Item 2'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
               ),
             ],
           ),
         ),
-        body: ListView(
-          children: const [
-            OddMapListItem(
-              img: 'assets/images/maps/bind.png',
-              mapName: "Bind",
-              index: 1,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              expandedHeight: 100,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text('maps')),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.redAccent.withAlpha(35),
+                            blurRadius: 4.2,
+                          ),
+                        ]),
+                    child: Image.asset(
+                      'assets/images/vallogo.png',
+                      fit: BoxFit.contain,
+                      height: 45,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            EvenMapListItem(
-              img: 'assets/images/maps/haven.png',
-              mapName: "Haven",
-              index: 2,
-            ),
-            OddMapListItem(
-              img: 'assets/images/maps/ascent.png',
-              mapName: "Ascent",
-              index: 3,
-            ),
-            EvenMapListItem(
-              img: 'assets/images/maps/split.png',
-              mapName: "Split",
-              index: 4,
-            ),
-            OddMapListItem(
-              img: 'assets/images/maps/bind.png',
-              mapName: "Bind",
-              index: 5,
-            ),
-            EvenMapListItem(
-              img: 'assets/images/maps/haven.png',
-              mapName: "Haven",
-              index: 6,
-            ),
-            OddMapListItem(
-              img: 'assets/images/maps/ascent.png',
-              mapName: "Ascent",
-              index: 7,
-            ),
-            EvenMapListItem(
-              img: 'assets/images/maps/split.png',
-              mapName: "Split",
-              index: 8,
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return index.isOdd
+                      ?  OddMapListItem(
+                          img: 'assets/images/maps/ascent.png',
+                          mapName: 'Ascent', index: index + 1,)
+                      :  EvenMapListItem(
+                          img: "assets/images/maps/ascent.png",
+                          mapName: 'Ascent', index: index + 1,);
+                },
+                childCount: 20,
+              ),
             ),
           ],
         ),
@@ -108,7 +110,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-String indexer(int index){
+String indexer(int index) {
   return index.toString().padLeft(2, '0');
 }
 
@@ -117,14 +119,14 @@ class OddMapListItem extends StatelessWidget {
   final String img;
   final String mapName;
   final String? mapDesc;
-  final int? index;
+  final int index;
 
   const OddMapListItem(
       {Key? key,
       required this.img,
       required this.mapName,
       this.mapDesc,
-      this.index})
+      required this.index})
       : super(key: key);
 
   @override
@@ -232,7 +234,7 @@ class OddMapListItem extends StatelessWidget {
                         child: RotatedBox(
                           quarterTurns: 3,
                           child: Text(
-                            indexer(index!),
+                            indexer(index),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -256,14 +258,14 @@ class EvenMapListItem extends StatelessWidget {
   final String img;
   final String mapName;
   final String? mapDesc;
-  final int? index;
+  final int index;
 
   const EvenMapListItem(
       {Key? key,
       required this.img,
       required this.mapName,
       this.mapDesc,
-      this.index})
+      required this.index})
       : super(key: key);
 
   @override
@@ -363,7 +365,7 @@ class EvenMapListItem extends StatelessWidget {
                         child: RotatedBox(
                           quarterTurns: 3,
                           child: Text(
-                            indexer(index!),
+                            indexer(index),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -387,4 +389,3 @@ class EvenMapListItem extends StatelessWidget {
     );
   }
 }
-
