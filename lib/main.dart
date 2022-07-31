@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:projects/color/color.dart';
 
@@ -34,29 +36,46 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+        drawer: Theme(
+          data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+          child: Drawer(
+            child: Stack(
+              children: <Widget>[
+                BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), //this is dependent on the import statment above
+                    child: Container(
+                        decoration: BoxDecoration(color: bgBlue.withOpacity(0.1))
+                    )
                 ),
-                child: Text('Drawer Header'),
-              ),
-              ListTile(
-                title: const Text('Item 1'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text('Item 2'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+                ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    const DrawerHeader(child: Text("Valorant", style: TextStyle(color: Colors.white),)),
+                    ListTile(
+                      leading: const Icon(Icons.dashboard, color: Colors.white,),
+                      title: const Text("dashboard", style: TextStyle(color: Colors.white),),
+                      onTap: (){
+
+                      }
+                    ),
+                    ListTile(
+                        leading: const Icon(Icons.person, color: Colors.white,),
+                        title: const Text("Agents", style: TextStyle(color: Colors.white),),
+                        onTap: (){
+
+                        }
+                    ),
+                    ListTile(
+                        leading: const Icon(Icons.lock, color: Colors.white,),
+                        title: const Text("Arsenal", style: TextStyle(color: Colors.white),),
+                        onTap: (){
+
+                        }
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
         body: CustomScrollView(
@@ -93,12 +112,16 @@ class HomePage extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return index.isOdd
-                      ?  OddMapListItem(
+                      ? EvenMapListItem(
+                          img: "assets/images/maps/haven.png",
+                          mapName: 'Haven',
+                          index: index + 1,
+                        )
+                      : OddMapListItem(
                           img: 'assets/images/maps/ascent.png',
-                          mapName: 'Ascent', index: index + 1,)
-                      :  EvenMapListItem(
-                          img: "assets/images/maps/ascent.png",
-                          mapName: 'Ascent', index: index + 1,);
+                          mapName: 'Ascent',
+                          index: index + 1,
+                        );
                 },
                 childCount: 20,
               ),
