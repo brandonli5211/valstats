@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:projects/agents.dart';
 import 'package:projects/color/color.dart';
 
 void main() {
@@ -16,14 +17,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Valorant Stats',
       theme: ThemeData(fontFamily: 'Valorant'),
-      home: const HomePage(),
+      home: const MapPage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class MapPage extends StatelessWidget {
+  const MapPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class HomePage extends StatelessWidget {
                     const DrawerHeader(child: Text("Valorant", style: TextStyle(color: Colors.white),)),
                     ListTile(
                       leading: const Icon(Icons.dashboard, color: Colors.white,),
-                      title: const Text("dashboard", style: TextStyle(color: Colors.white),),
+                      title: const Text("Maps", style: TextStyle(color: Colors.white),),
                       onTap: (){
 
                       }
@@ -62,7 +63,10 @@ class HomePage extends StatelessWidget {
                         leading: const Icon(Icons.person, color: Colors.white,),
                         title: const Text("Agents", style: TextStyle(color: Colors.white),),
                         onTap: (){
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const AgentsPage())
+                          );
                         }
                     ),
                     ListTile(
@@ -84,6 +88,7 @@ class HomePage extends StatelessWidget {
               expandedHeight: 100,
               backgroundColor: Colors.transparent,
               elevation: 0,
+              floating: true,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,7 +100,7 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.redAccent.withAlpha(35),
+                            color: Colors.redAccent.withAlpha(30),
                             blurRadius: 4.2,
                           ),
                         ]),
@@ -123,7 +128,7 @@ class HomePage extends StatelessWidget {
                           index: index + 1,
                         );
                 },
-                childCount: 20,
+                childCount: 5,
               ),
             ),
           ],
