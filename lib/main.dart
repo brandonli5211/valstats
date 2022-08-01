@@ -149,14 +149,16 @@ class _MapPageState extends State<MapPage> {
                               var mapModel = model.data![index];
                               return index.isOdd
                                   ? EvenMapListItem(
-                                      img: (mapModel).splash,
-                                      mapName: 'Haven',
+                                      img: mapModel.splash,
+                                      mapName: mapModel.displayName,
                                       index: index + 1,
+                                      mapDesc: mapModel.coordinates,
                                     )
                                   : OddMapListItem(
-                                      img: (mapModel).splash,
-                                      mapName: 'Haven',
+                                      img: mapModel.splash,
+                                      mapName: mapModel.displayName,
                                       index: index + 1,
+                                      mapDesc: mapModel.coordinates,
                                     );
                             },
                             childCount: model.data!.length,
@@ -273,12 +275,9 @@ class OddMapListItem extends StatelessWidget {
                                   ),
                                   Text(
                                     mapDesc ??
-                                        "Two sites. No middle. Gotta pick left or right. "
-                                            "What’s it going to be then? Both offer direct paths "
-                                            "for attackers and a pair of one-way teleporters make "
-                                            "it easier to flank.",
+                                        "5°26'BF'N,12°20'Q'E",
                                     style: const TextStyle(
-                                      fontSize: 7,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Color.fromRGBO(132, 138, 138, 1),
                                     ),
@@ -404,12 +403,9 @@ class EvenMapListItem extends StatelessWidget {
                                   ),
                                   Text(
                                     mapDesc ??
-                                        "Two sites. No middle. Gotta pick left or right. "
-                                            "What’s it going to be then? Both offer direct paths "
-                                            "for attackers and a pair of one-way teleporters make "
-                                            "it easier to flank.",
+                                        "5°41'CD'N,139°41'WX'E",
                                     style: const TextStyle(
-                                      fontSize: 7,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Color.fromRGBO(132, 138, 138, 1),
                                     ),
