@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/agents.dart';
 import 'package:projects/color/color.dart';
@@ -24,8 +23,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +50,18 @@ class MapPage extends StatelessWidget {
               children: <Widget>[
                 BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    //this is dependent on the import statment above
+                    //this is dependent on the import statement above
                     child: Container(
                         decoration:
-                            BoxDecoration(color: bgBlue.withOpacity(0.1)))),
+                        BoxDecoration(color: bgBlue.withOpacity(0.1)))),
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     const DrawerHeader(
                         child: Text(
-                      "Valorant",
-                      style: TextStyle(color: Colors.white),
-                    )),
+                          "Valorant",
+                          style: TextStyle(color: Colors.white),
+                        )),
                     ListTile(
                         leading: const Icon(
                           Icons.dashboard,
@@ -131,18 +136,18 @@ class MapPage extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   return index.isOdd
                       ? EvenMapListItem(
-                          img: "assets/images/maps/haven.png",
-                          mapName: 'Haven',
-                          index: index + 1,
-                        )
+                    img: "assets/images/maps/haven.png",
+                    mapName: 'Haven',
+                    index: index + 1,
+                  )
                       : OddMapListItem(
-                          img: 'assets/images/maps/ascent.png',
-                          mapName: 'Ascent',
-                          index: index + 1,
-                        );
+                    img: 'assets/images/maps/ascent.png',
+                    mapName: 'Ascent',
+                    index: index + 1,
+                  );
                 },
                 childCount: 5,
               ),
@@ -165,12 +170,11 @@ class OddMapListItem extends StatelessWidget {
   final String? mapDesc;
   final int index;
 
-  const OddMapListItem(
-      {Key? key,
-      required this.img,
-      required this.mapName,
-      this.mapDesc,
-      required this.index})
+  const OddMapListItem({Key? key,
+    required this.img,
+    required this.mapName,
+    this.mapDesc,
+    required this.index})
       : super(key: key);
 
   @override
@@ -188,8 +192,8 @@ class OddMapListItem extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   shape: const BeveledRectangleBorder(
                       borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20.0),
-                  )),
+                        topRight: Radius.circular(20.0),
+                      )),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -304,12 +308,11 @@ class EvenMapListItem extends StatelessWidget {
   final String? mapDesc;
   final int index;
 
-  const EvenMapListItem(
-      {Key? key,
-      required this.img,
-      required this.mapName,
-      this.mapDesc,
-      required this.index})
+  const EvenMapListItem({Key? key,
+    required this.img,
+    required this.mapName,
+    this.mapDesc,
+    required this.index})
       : super(key: key);
 
   @override
@@ -336,8 +339,8 @@ class EvenMapListItem extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   shape: const BeveledRectangleBorder(
                       borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                  )),
+                        topLeft: Radius.circular(20.0),
+                      )),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
