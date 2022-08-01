@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:projects/agents.dart';
 import 'package:projects/color/color.dart';
+import 'package:projects/constants/http.dart';
+import 'package:projects/map/map_http_client.dart';
+import 'package:projects/model/map.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -31,6 +34,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  final _httpClient = MapHttpClient(mapUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +57,15 @@ class _MapPageState extends State<MapPage> {
                     //this is dependent on the import statement above
                     child: Container(
                         decoration:
-                        BoxDecoration(color: bgBlue.withOpacity(0.1)))),
+                            BoxDecoration(color: bgBlue.withOpacity(0.1)))),
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     const DrawerHeader(
                         child: Text(
-                          "Valorant",
-                          style: TextStyle(color: Colors.white),
-                        )),
+                      "Valorant",
+                      style: TextStyle(color: Colors.white),
+                    )),
                     ListTile(
                         leading: const Icon(
                           Icons.dashboard,
@@ -134,23 +138,31 @@ class _MapPageState extends State<MapPage> {
                 ],
               ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                  return index.isOdd
-                      ? EvenMapListItem(
-                    img: "assets/images/maps/haven.png",
-                    mapName: 'Haven',
-                    index: index + 1,
-                  )
-                      : OddMapListItem(
-                    img: 'assets/images/maps/ascent.png',
-                    mapName: 'Ascent',
-                    index: index + 1,
-                  );
-                },
-                childCount: 5,
-              ),
+            FutureBuilder(
+              future: _httpClient.getMap(),
+              builder: (BuildContext context,
+                      AsyncSnapshot<List<MapModel>> model) =>
+                  model.hasData
+                      ? SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              var mapModel = model.data![index];
+                              return index.isOdd
+                                  ? EvenMapListItem(
+                                      img: (mapModel).splash,
+                                      mapName: 'Haven',
+                                      index: index + 1,
+                                    )
+                                  : OddMapListItem(
+                                      img: (mapModel).splash,
+                                      mapName: 'Haven',
+                                      index: index + 1,
+                                    );
+                            },
+                            childCount: model.data!.length,
+                          ),
+                        )
+                      : const SliverToBoxAdapter(child: Text('No data found')),
             ),
           ],
         ),
@@ -170,11 +182,12 @@ class OddMapListItem extends StatelessWidget {
   final String? mapDesc;
   final int index;
 
-  const OddMapListItem({Key? key,
-    required this.img,
-    required this.mapName,
-    this.mapDesc,
-    required this.index})
+  const OddMapListItem(
+      {Key? key,
+      required this.img,
+      required this.mapName,
+      this.mapDesc,
+      required this.index})
       : super(key: key);
 
   @override
@@ -192,12 +205,12 @@ class OddMapListItem extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   shape: const BeveledRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20.0),
-                      )),
+                    topRight: Radius.circular(20.0),
+                  )),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(img),
+                        image: NetworkImage(img),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -308,11 +321,12 @@ class EvenMapListItem extends StatelessWidget {
   final String? mapDesc;
   final int index;
 
-  const EvenMapListItem({Key? key,
-    required this.img,
-    required this.mapName,
-    this.mapDesc,
-    required this.index})
+  const EvenMapListItem(
+      {Key? key,
+      required this.img,
+      required this.mapName,
+      this.mapDesc,
+      required this.index})
       : super(key: key);
 
   @override
@@ -339,12 +353,12 @@ class EvenMapListItem extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   shape: const BeveledRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                      )),
+                    topLeft: Radius.circular(20.0),
+                  )),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(img),
+                        image: NetworkImage(img),
                         fit: BoxFit.fill,
                       ),
                     ),

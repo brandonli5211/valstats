@@ -7,10 +7,10 @@ class MapHttpClient {
 
   MapHttpClient(this.url);
 
-  getMap() async {
+  Future<List<MapModel>> getMap() async {
     var dio = Dio();
     var response = await dio.get(url);
     var data = response.data;
-    return (data["data"] as List).map((e) => MapModel.fromJson(e));
+    return (data["data"] as List).map((e) => MapModel.fromJson(e)).toList();
   }
 }
