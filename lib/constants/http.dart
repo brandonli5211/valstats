@@ -1,0 +1,1 @@
+const mapUrl = "https://valorant-api.com/v1/maps";

@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:projects/agents.dart';
 import 'package:projects/color/color.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -43,39 +44,54 @@ class MapPage extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), //this is dependent on the import statment above
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    //this is dependent on the import statment above
                     child: Container(
-                        decoration: BoxDecoration(color: bgBlue.withOpacity(0.1))
-                    )
-                ),
+                        decoration:
+                            BoxDecoration(color: bgBlue.withOpacity(0.1)))),
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    const DrawerHeader(child: Text("Valorant", style: TextStyle(color: Colors.white),)),
+                    const DrawerHeader(
+                        child: Text(
+                      "Valorant",
+                      style: TextStyle(color: Colors.white),
+                    )),
                     ListTile(
-                      leading: const Icon(Icons.dashboard, color: Colors.white,),
-                      title: const Text("Maps", style: TextStyle(color: Colors.white),),
-                      onTap: (){
-
-                      }
-                    ),
+                        leading: const Icon(
+                          Icons.dashboard,
+                          color: Colors.white,
+                        ),
+                        title: const Text(
+                          "Maps",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {}),
                     ListTile(
-                        leading: const Icon(Icons.person, color: Colors.white,),
-                        title: const Text("Agents", style: TextStyle(color: Colors.white),),
-                        onTap: (){
+                        leading: const Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        title: const Text(
+                          "Agents",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const AgentsPage())
-                          );
-                        }
-                    ),
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AgentsPage()));
+                        }),
                     ListTile(
-                        leading: const Icon(Icons.lock, color: Colors.white,),
-                        title: const Text("Arsenal", style: TextStyle(color: Colors.white),),
-                        onTap: (){
-
-                        }
-                    ),
+                        leading: const Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        title: const Text(
+                          "Arsenal",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {}),
                   ],
                 )
               ],
