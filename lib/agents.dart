@@ -78,37 +78,54 @@ class AgentsPage extends StatelessWidget {
             ),
           ),
         ),
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              expandedHeight: 100,
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text('Agents')),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.redAccent.withAlpha(35),
-                            blurRadius: 4.2,
-                          ),
-                        ]),
-                    child: Image.asset(
-                      'assets/images/vallogo.png',
-                      fit: BoxFit.contain,
-                      height: 45,
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                expandedHeight: 100,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text(
+                          'Agents',
+                          style: TextStyle(fontSize: 25),
+                        )),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.redAccent.withAlpha(35),
+                              blurRadius: 4.2,
+                            ),
+                          ]),
+                      child: Image.asset(
+                        'assets/images/vallogo.png',
+                        fit: BoxFit.contain,
+                        height: 45,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              )
+            ];
+          },
+          body: Column(
+            children: [
+              Container(
+                height: 600,
+                color: Colors.redAccent,
               ),
-            ),
-          ],
+              Container(
+                height: 1000,
+                color: Colors.blueAccent,
+              )
+            ],
+          ),
         ),
       ),
     );

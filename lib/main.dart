@@ -119,7 +119,7 @@ class _MapPageState extends State<MapPage> {
                 children: [
                   Container(
                       padding: const EdgeInsets.all(8.0),
-                      child: const Text('maps')),
+                      child: const Text('maps', style: TextStyle(fontSize: 25),)),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
