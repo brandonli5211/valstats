@@ -78,56 +78,78 @@ class AgentsPage extends StatelessWidget {
             ),
           ),
         ),
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                expandedHeight: 100,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Text(
-                          'Agents',
-                          style: TextStyle(fontSize: 25),
-                        )),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.redAccent.withAlpha(35),
-                              blurRadius: 4.2,
-                            ),
-                          ]),
-                      child: Image.asset(
-                        'assets/images/vallogo.png',
-                        fit: BoxFit.contain,
-                        height: 45,
-                      ),
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              expandedHeight: 100,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              floating: true,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text(
+                        'Agents',
+                        style: TextStyle(fontSize: 25),
+                      )),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.redAccent.withAlpha(30),
+                            blurRadius: 4.2,
+                          ),
+                        ]),
+                    child: Image.asset(
+                      'assets/images/vallogo.png',
+                      fit: BoxFit.contain,
+                      height: 45,
                     ),
-                  ],
-                ),
-              )
-            ];
-          },
-          body: Column(
-            children: [
-              Container(
-                height: 600,
-                color: Colors.redAccent,
+                  ),
+                ],
               ),
-              Container(
-                height: 1000,
-                color: Colors.blueAccent,
-              )
-            ],
-          ),
+            ),
+            SliverPersistentHeader(
+              delegate: SectionHeaderDelegate("Section B"),
+              pinned: true,
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(color: Colors.yellow, height: 400),
+                Container(color: Colors.red, height: 800),
+              ]),
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final String title;
+  final double height;
+
+  SectionHeaderDelegate(this.title, [this.height = 80]);
+
+  @override
+  Widget build(context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      alignment: Alignment.center,
+      child: Text(title),
+    );
+  }
+
+  @override
+  double get maxExtent => height;
+
+  @override
+  double get minExtent => height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }
