@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:projects/main.dart';
-
-import 'color/color.dart';
+import 'package:projects/color/color.dart';
+import 'package:projects/drawer.dart';
 
 class AgentsPage extends StatelessWidget {
   const AgentsPage({super.key});
@@ -11,72 +9,17 @@ class AgentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          color: bgBlue,
-          image: DecorationImage(
-              image: AssetImage('assets/images/mapvalbg.png'),
-              fit: BoxFit.fill)),
+        color: bgBlue,
+        image: DecorationImage(
+          image: AssetImage('assets/images/mapvalbg.png'),
+          fit: BoxFit.fill,
+          opacity: 0.3,
+        ),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        drawer: Theme(
-          data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: Drawer(
-            child: Stack(
-              children: <Widget>[
-                BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: bgBlue.withValues(alpha: 0.1)))),
-                ListView(
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    const DrawerHeader(
-                        child: Text(
-                      "Valorant",
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    ListTile(
-                        leading: const Icon(
-                          Icons.dashboard,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          "Maps",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MapPage()));
-                        }),
-                    ListTile(
-                        leading: const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          "Agents",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {}),
-                    ListTile(
-                        leading: const Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          "Arsenal",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {}),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
+        drawer: const ValDrawer(currentPage: 'agents'),
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -84,71 +27,53 @@ class AgentsPage extends StatelessWidget {
               backgroundColor: Colors.transparent,
               elevation: 0,
               floating: true,
+              iconTheme: const IconThemeData(color: Colors.white),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
-                        'Agents',
-                        style: TextStyle(fontSize: 25),
-                      )),
+                  const Text(
+                    'agents',
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.white,
+                      letterSpacing: 3,
+                    ),
+                  ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.redAccent.withValues(alpha: 30 / 255),
-                            blurRadius: 4.2,
-                          ),
-                        ]),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: valRed.withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
                     child: Image.asset(
                       'assets/images/vallogo.png',
                       fit: BoxFit.contain,
-                      height: 45,
+                      height: 40,
                     ),
                   ),
                 ],
               ),
             ),
-            SliverPersistentHeader(
-              delegate: SectionHeaderDelegate("Section B"),
-              pinned: true,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Container(color: Colors.yellow, height: 400),
-                Container(color: Colors.red, height: 800),
-              ]),
+            const SliverFillRemaining(
+              child: Center(
+                child: Text(
+                  'coming soon',
+                  style: TextStyle(
+                    color: Colors.white38,
+                    fontSize: 18,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
   }
-}
-
-class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final String title;
-  final double height;
-
-  SectionHeaderDelegate(this.title, [this.height = 80]);
-
-  @override
-  Widget build(context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      alignment: Alignment.center,
-      child: Text(title),
-    );
-  }
-
-  @override
-  double get maxExtent => height;
-
-  @override
-  double get minExtent => height;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }

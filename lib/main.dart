@@ -1,9 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:projects/agents.dart';
 import 'package:projects/color/color.dart';
 import 'package:projects/constants/http.dart';
+import 'package:projects/drawer.dart';
 import 'package:projects/map/map_http_client.dart';
 import 'package:projects/model/map.dart';
 
@@ -18,9 +17,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Valorant Stats',
-      theme: ThemeData(fontFamily: 'Valorant'),
-      home: const MapPage(),
+      theme: ThemeData(
+        fontFamily: 'Valorant',
+        scaffoldBackgroundColor: bgBlue,
+        brightness: Brightness.dark,
+      ),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MapPage(),
+        '/agents': (context) => const AgentsPage(),
+      },
     );
   }
 }
@@ -34,77 +41,29 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final _httpClient = MapHttpClient(mapUrl);
+  late final Future<List<MapModel>> _mapFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapFuture = _httpClient.getMap();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          color: bgBlue,
-          image: DecorationImage(
-              image: AssetImage('assets/images/mapvalbg.png'),
-              fit: BoxFit.fill)),
+        color: bgBlue,
+        image: DecorationImage(
+          image: AssetImage('assets/images/mapvalbg.png'),
+          fit: BoxFit.fill,
+          opacity: 0.3,
+        ),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
-        drawer: Theme(
-          data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: Drawer(
-            child: Stack(
-              children: <Widget>[
-                BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: bgBlue.withValues(alpha: 0.1)))),
-                ListView(
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    const DrawerHeader(
-                        child: Text(
-                      "Valorant",
-                      style: TextStyle(color: Colors.white),
-                    )),
-                    ListTile(
-                        leading: const Icon(
-                          Icons.dashboard,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          "Maps",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {}),
-                    ListTile(
-                        leading: const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          "Agents",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AgentsPage()));
-                        }),
-                    ListTile(
-                        leading: const Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                        title: const Text(
-                          "Arsenal",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {}),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
+        drawer: const ValDrawer(currentPage: 'maps'),
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -112,60 +71,82 @@ class _MapPageState extends State<MapPage> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               floating: true,
+              iconTheme: const IconThemeData(color: Colors.white),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text(
-                        'maps',
-                        style: TextStyle(fontSize: 25),
-                      )),
+                  const Text(
+                    'maps',
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.white,
+                      letterSpacing: 3,
+                    ),
+                  ),
                   Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.redAccent.withValues(alpha: 30 / 255),
-                            blurRadius: 4.2,
-                          ),
-                        ]),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: valRed.withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
                     child: Image.asset(
                       'assets/images/vallogo.png',
                       fit: BoxFit.contain,
-                      height: 45,
+                      height: 40,
                     ),
                   ),
                 ],
               ),
             ),
             FutureBuilder(
-              future: _httpClient.getMap(),
+              future: _mapFuture,
               builder: (BuildContext context,
-                      AsyncSnapshot<List<MapModel>> model) =>
-                  model.hasData
-                      ? SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              var mapModel = model.data![index];
-                              return index.isOdd
-                                  ? EvenMapListItem(
-                                      img: mapModel.splash,
-                                      mapName: mapModel.displayName,
-                                      index: index + 1,
-                                      mapDesc: mapModel.coordinates,
-                                    )
-                                  : OddMapListItem(
-                                      img: mapModel.splash,
-                                      mapName: mapModel.displayName,
-                                      index: index + 1,
-                                      mapDesc: mapModel.coordinates,
-                                    );
-                            },
-                            childCount: model.data!.length,
-                          ),
-                        )
-                      : const SliverToBoxAdapter(child: Text('No data found')),
+                  AsyncSnapshot<List<MapModel>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SliverFillRemaining(
+                    child: Center(
+                      child: CircularProgressIndicator(color: valRed),
+                    ),
+                  );
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const SliverFillRemaining(
+                    child: Center(
+                      child: Text(
+                        'no maps found',
+                        style: TextStyle(color: Colors.white54, fontSize: 16),
+                      ),
+                    ),
+                  );
+                }
+                final maps = snapshot.data!;
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      var mapModel = maps[index];
+                      return index.isOdd
+                          ? EvenMapListItem(
+                              img: mapModel.splash,
+                              mapName: mapModel.displayName,
+                              index: index + 1,
+                              mapDesc: mapModel.coordinates,
+                            )
+                          : OddMapListItem(
+                              img: mapModel.splash,
+                              mapName: mapModel.displayName,
+                              index: index + 1,
+                              mapDesc: mapModel.coordinates,
+                            );
+                    },
+                    childCount: maps.length,
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -267,7 +248,8 @@ class OddMapListItem extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    mapDesc ?? "5°26'BF'N,12°20'Q'E",
+                                    mapDesc ??
+                                        "5°26'BF'N,12°20'Q'E",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
@@ -386,7 +368,8 @@ class EvenMapListItem extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    mapDesc ?? "5°41'CD'N,139°41'WX'E",
+                                    mapDesc ??
+                                        "5°41'CD'N,139°41'WX'E",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,

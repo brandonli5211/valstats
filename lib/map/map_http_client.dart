@@ -14,6 +14,14 @@ class MapHttpClient {
     if (data is String) {
       return [];
     }
-    return (data["data"] as List).map((e) => MapModel.fromJson(e)).toList();
+    final allMaps =
+        (data["data"] as List).map((e) => MapModel.fromJson(e)).toList();
+
+    final seen = <String>{};
+    return allMaps.where((m) {
+      if (seen.contains(m.uuid)) return false;
+      seen.add(m.uuid);
+      return true;
+    }).toList();
   }
 }
