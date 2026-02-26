@@ -3,10 +3,21 @@ class MapModel {
   String uuid;
   String assetPath;
   String displayName;
-  String coordinates;
+  String? coordinates;
 
-  MapModel({required this.uuid, required this.splash, required this.assetPath, required this.displayName, required this.coordinates});
+  MapModel({
+    required this.uuid,
+    required this.splash,
+    required this.assetPath,
+    required this.displayName,
+    this.coordinates,
+  });
 
   factory MapModel.fromJson(Map<String, dynamic> json) => MapModel(
-      uuid: json["uuid"], splash: json["splash"], assetPath: json["assetPath"], displayName: json['displayName'], coordinates: json['coordinates']);
+        uuid: json["uuid"],
+        splash: json["splash"] ?? '',
+        assetPath: json["assetPath"] ?? '',
+        displayName: json['displayName'] ?? '',
+        coordinates: json['coordinates'],
+      );
 }

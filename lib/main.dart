@@ -12,9 +12,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key}) : super(key: key);
+  const MapPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _MapPageState();
@@ -54,10 +53,9 @@ class _MapPageState extends State<MapPage> {
               children: <Widget>[
                 BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    //this is dependent on the import statement above
                     child: Container(
-                        decoration:
-                            BoxDecoration(color: bgBlue.withOpacity(0.1)))),
+                        decoration: BoxDecoration(
+                            color: bgBlue.withValues(alpha: 0.1)))),
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
@@ -119,13 +117,16 @@ class _MapPageState extends State<MapPage> {
                 children: [
                   Container(
                       padding: const EdgeInsets.all(8.0),
-                      child: const Text('maps', style: TextStyle(fontSize: 25),)),
+                      child: const Text(
+                        'maps',
+                        style: TextStyle(fontSize: 25),
+                      )),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.redAccent.withAlpha(30),
+                            color: Colors.redAccent.withValues(alpha: 30 / 255),
                             blurRadius: 4.2,
                           ),
                         ]),
@@ -177,7 +178,6 @@ String indexer(int index) {
   return index.toString().padLeft(2, '0');
 }
 
-// different orientation based on position in the list order
 class OddMapListItem extends StatelessWidget {
   final String img;
   final String mapName;
@@ -185,12 +185,11 @@ class OddMapListItem extends StatelessWidget {
   final int index;
 
   const OddMapListItem(
-      {Key? key,
+      {super.key,
       required this.img,
       required this.mapName,
       this.mapDesc,
-      required this.index})
-      : super(key: key);
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +199,6 @@ class OddMapListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              //image flexible
               Flexible(
                 flex: 11,
                 child: Material(
@@ -220,8 +218,6 @@ class OddMapListItem extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // invisible flexible for stacking
               Flexible(
                 flex: 7,
                 child: Container(
@@ -240,13 +236,10 @@ class OddMapListItem extends StatelessWidget {
                   color: Colors.transparent,
                 ),
               ),
-
-              // invisible flexible for stacking
               Flexible(
                 flex: 8,
                 child: Stack(
                   children: [
-                    // container for stacking the index
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Material(
@@ -256,7 +249,7 @@ class OddMapListItem extends StatelessWidget {
                                 bottomLeft: Radius.circular(20)),
                           ),
                           color: const Color.fromRGBO(112, 118, 115, 1)
-                              .withAlpha(160),
+                              .withValues(alpha: 160 / 255),
                           child: SizedBox(
                             height: 125,
                             width: 375,
@@ -274,8 +267,7 @@ class OddMapListItem extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    mapDesc ??
-                                        "5°26'BF'N,12°20'Q'E",
+                                    mapDesc ?? "5°26'BF'N,12°20'Q'E",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
@@ -312,21 +304,18 @@ class OddMapListItem extends StatelessWidget {
   }
 }
 
-// different orientation based on position in the list order
 class EvenMapListItem extends StatelessWidget {
-  //img path
   final String img;
   final String mapName;
   final String? mapDesc;
   final int index;
 
   const EvenMapListItem(
-      {Key? key,
+      {super.key,
       required this.img,
       required this.mapName,
       this.mapDesc,
-      required this.index})
-      : super(key: key);
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +325,6 @@ class EvenMapListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              // invisible flexible for stacking
               Flexible(
                 flex: 7,
                 child: Container(
@@ -344,8 +332,6 @@ class EvenMapListItem extends StatelessWidget {
                   color: Colors.transparent,
                 ),
               ),
-
-              //image flexible
               Flexible(
                 flex: 11,
                 child: Material(
@@ -369,12 +355,10 @@ class EvenMapListItem extends StatelessWidget {
           ),
           Row(
             children: [
-              // invisible flexible for stacking
               Flexible(
                 flex: 8,
                 child: Stack(
                   children: [
-                    // container for stacking the index
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Material(
@@ -384,7 +368,7 @@ class EvenMapListItem extends StatelessWidget {
                                 bottomRight: Radius.circular(20)),
                           ),
                           color: const Color.fromRGBO(112, 118, 115, 1)
-                              .withAlpha(160),
+                              .withValues(alpha: 160 / 255),
                           child: SizedBox(
                             height: 125,
                             width: 375,
@@ -402,8 +386,7 @@ class EvenMapListItem extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    mapDesc ??
-                                        "5°41'CD'N,139°41'WX'E",
+                                    mapDesc ?? "5°41'CD'N,139°41'WX'E",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,

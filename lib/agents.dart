@@ -5,7 +5,7 @@ import 'package:projects/main.dart';
 import 'color/color.dart';
 
 class AgentsPage extends StatelessWidget {
-  const AgentsPage({Key? key}) : super(key: key);
+  const AgentsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,9 @@ class AgentsPage extends StatelessWidget {
               children: <Widget>[
                 BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    //this is dependent on the import statment above
                     child: Container(
-                        decoration:
-                            BoxDecoration(color: bgBlue.withOpacity(0.1)))),
+                        decoration: BoxDecoration(
+                            color: bgBlue.withValues(alpha: 0.1)))),
                 ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
@@ -99,7 +98,7 @@ class AgentsPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.redAccent.withAlpha(30),
+                            color: Colors.redAccent.withValues(alpha: 30 / 255),
                             blurRadius: 4.2,
                           ),
                         ]),
